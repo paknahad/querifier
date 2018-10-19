@@ -1,0 +1,27 @@
+{
+    "description": "A library to get requested query from the client and generate a query for Doctrine, Cake-php ORM or Laravel Eloquent",
+    "name": "paknahad/querifier",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["filter", "query", "parser", "php", "RESTful", "doctrine", "symfony", "cakephp"],
+    "authors": [
+        {
+            "name": "Hamid Paknahad",
+            "email": "hp.paknahad@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "psr/http-message": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0.0",
+        "doctrine/orm": "^2.6"
+    },
+    "autoload": {
+        "psr-4": { "Paknahad\\QueryParser\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Paknahad\\QueryParser\\Tests\\": "tests/" }
+    }
+}
