@@ -45,7 +45,7 @@ class Doctrine extends AbstractFilter
     {
         foreach ($this->relations as $sourceEntityAlias => $relations) {
             foreach ($relations as $relation => $destinationEntityAlias) {
-                $this->query->join(sprintf('%s.%s', $sourceEntityAlias, $relation), $destinationEntityAlias);
+                $this->query->leftJoin(sprintf('%s.%s', $sourceEntityAlias, $relation), $destinationEntityAlias);
             }
         }
     }
@@ -65,7 +65,7 @@ class Doctrine extends AbstractFilter
             return $this->query->expr()
                 ->{Operators::getOperator($condition->getOperator(), 'doctrine')}(
                     $this->getFieldName($metadata),
-                    $this->setValue($condition->getValue())
+                    $this->setValue($condition->getValue(), $condition->getOperator())
                 );
 
         } elseif ($condition instanceof Combiner) {
@@ -140,12 +140,16 @@ class Doctrine extends AbstractFilter
      *
      * @return string
      */
-    protected function setValue($value): ?string
+    protected function setValue($value, string $operator): ?string
     {
         static $iterator = 0;
 
-        if (is_null($value)) {
+        if (is_null($value) || in_array($operator, [Operators::OP_IS_NULL, Operators::OP_IS_NOT_NULL])) {
             return null;
+        }
+
+        if (in_array($operator, [Operators::OP_IN, Operators::OP_NOT_IN])) {
+            $value = explode(',', $value);
         }
 
         $this->query->setParameter(++$iterator, $value);
