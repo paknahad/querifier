@@ -1,7 +1,7 @@
 <?php
-namespace Paknahad\QueryParser\Parts;
+namespace Paknahad\Querifier\Parts;
 
-use Paknahad\QueryParser\Exception\InvalidFilter;
+use Paknahad\Querifier\Exception\InvalidFilter;
 
 class Combiner extends AbstractCondition
 {

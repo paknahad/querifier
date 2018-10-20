@@ -1,5 +1,5 @@
 <?php
-namespace Paknahad\QueryParser\Filters;
+namespace Paknahad\Querifier\Filters;
 
 
 interface FilterInterface

@@ -1,8 +1,8 @@
 <?php
-namespace Paknahad\QueryParser\Parts;
+namespace Paknahad\Querifier\Parts;
 
-use Paknahad\QueryParser\Exception\InvalidOperator;
-use Paknahad\QueryParser\Operators;
+use Paknahad\Querifier\Exception\InvalidOperator;
+use Paknahad\Querifier\Operators;
 
 class Condition extends AbstractCondition
 {
@@ -12,7 +12,7 @@ class Condition extends AbstractCondition
     public function __construct(string $field, string $operator, string $value, ?string $name = null)
     {
         if (!in_array($operator, array_keys(Operators::OPERATORS))) {
-            throw new InvalidOperator();
+            throw new InvalidOperator('Invalid Operator');
         }
 
         $this->field = $field;

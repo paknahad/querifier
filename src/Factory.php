@@ -1,9 +1,9 @@
 <?php
-namespace Paknahad\QueryParser;
+namespace Paknahad\Querifier;
 
-use Paknahad\QueryParser\Exception\InvalidFilter;
-use Paknahad\QueryParser\Parts\Combiner;
-use Paknahad\QueryParser\Parts\Condition;
+use Paknahad\Querifier\Exception\InvalidFilter;
+use Paknahad\Querifier\Parts\Combiner;
+use Paknahad\Querifier\Parts\Condition;
 
 class Factory
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Paknahad\QueryParser;
+namespace Paknahad\Querifier;
 
 class Operators
 {

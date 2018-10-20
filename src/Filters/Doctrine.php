@@ -1,15 +1,15 @@
 <?php
-namespace Paknahad\QueryParser\Filters;
+namespace Paknahad\Querifier\Filters;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr\Composite;
-use Paknahad\QueryParser\Operators;
-use Paknahad\QueryParser\Parts\AbstractCondition;
-use Paknahad\QueryParser\Parts\Combiner;
-use Paknahad\QueryParser\Parts\Condition;
-use Paknahad\QueryParser\Query;
+use Paknahad\Querifier\Operators;
+use Paknahad\Querifier\Parts\AbstractCondition;
+use Paknahad\Querifier\Parts\Combiner;
+use Paknahad\Querifier\Parts\Condition;
+use Paknahad\Querifier\Query;
 
 class Doctrine extends AbstractFilter
 {

@@ -6,7 +6,7 @@
  * Time: 1:46 PM
  */
 
-namespace Paknahad\QueryParser\Parts;
+namespace Paknahad\Querifier\Parts;
 
 
 interface ConditionInterface

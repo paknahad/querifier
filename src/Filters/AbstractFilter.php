@@ -1,8 +1,8 @@
 <?php
-namespace Paknahad\QueryParser\Filters;
+namespace Paknahad\Querifier\Filters;
 
-use Paknahad\QueryParser\Parts\AbstractCondition;
-use Paknahad\QueryParser\Query;
+use Paknahad\Querifier\Parts\AbstractCondition;
+use Paknahad\Querifier\Query;
 
 abstract class AbstractFilter implements FilterInterface
 {

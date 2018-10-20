@@ -1,10 +1,10 @@
 <?php
-namespace Paknahad\QueryParser;
+namespace Paknahad\Querifier;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Paknahad\QueryParser\Exception\InvalidQuery;
-use Paknahad\QueryParser\Filters\Doctrine;
+use Paknahad\Querifier\Exception\InvalidQuery;
+use Paknahad\Querifier\Filters\Doctrine;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Filter

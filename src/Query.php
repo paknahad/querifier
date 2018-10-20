@@ -1,8 +1,8 @@
 <?php
-namespace Paknahad\QueryParser;
+namespace Paknahad\Querifier;
 
-use Paknahad\QueryParser\Parts\AbstractCondition;
-use Paknahad\QueryParser\Parts\Combiner;
+use Paknahad\Querifier\Parts\AbstractCondition;
+use Paknahad\Querifier\Parts\Combiner;
 
 class Query
 {

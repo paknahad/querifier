@@ -1,8 +1,8 @@
 <?php
-namespace Paknahad\QueryParser;
+namespace Paknahad\Querifier;
 
-use Paknahad\QueryParser\Exception\InvalidFilter;
-use Paknahad\QueryParser\Parts\AbstractCondition;
+use Paknahad\Querifier\Exception\InvalidFilter;
+use Paknahad\Querifier\Parts\AbstractCondition;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Parser

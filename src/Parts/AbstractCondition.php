@@ -1,5 +1,5 @@
 <?php
-namespace Paknahad\QueryParser\Parts;
+namespace Paknahad\Querifier\Parts;
 
 
 abstract class AbstractCondition implements ConditionInterface
