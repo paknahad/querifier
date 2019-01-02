@@ -19,9 +19,9 @@
         "doctrine/orm": "^2.6"
     },
     "autoload": {
-        "psr-4": { "Paknahad\\QueryParser\\": "src/" }
+        "psr-4": { "Paknahad\\Querifier\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Paknahad\\QueryParser\\Tests\\": "tests/" }
+        "psr-4": { "Paknahad\\Querifier\\Tests\\": "tests/" }
     }
 }
