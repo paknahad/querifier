@@ -1,7 +1,6 @@
 <?php
 namespace Paknahad\Querifier;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Paknahad\Querifier\Exception\InvalidQuery;
 use Paknahad\Querifier\Filters\Doctrine;
@@ -19,16 +18,16 @@ class Filter
 
     public function applyFilter($query)
     {
-        if ($query instanceof EntityRepository) {
+        if ($query instanceof QueryBuilder) {
             return $this->filterDoctrine($query);
         }
 
         throw new InvalidQuery('Unknown Query class: ' . get_class($query));
     }
 
-    private function filterDoctrine(EntityRepository $repository): QueryBuilder
+    private function filterDoctrine(QueryBuilder $queryBuilder): QueryBuilder
     {
-        $finder = new Doctrine($repository, $this->query);
+        $finder = new Doctrine($queryBuilder, $this->query);
 
         return $finder->getFilteredQuery();
     }

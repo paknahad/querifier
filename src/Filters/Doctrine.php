@@ -2,9 +2,9 @@
 namespace Paknahad\Querifier\Filters;
 
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr\Composite;
+use Doctrine\ORM\QueryBuilder;
 use Paknahad\Querifier\Operators;
 use Paknahad\Querifier\Parts\AbstractCondition;
 use Paknahad\Querifier\Parts\Combiner;
@@ -13,15 +13,15 @@ use Paknahad\Querifier\Query;
 
 class Doctrine extends AbstractFilter
 {
-    const ROOT_ALIAS = 'r';
-
     protected $entityManager;
     protected $rootEntity;
+    protected $rootAlias;
     protected $fields;
 
-    public function __construct(EntityRepository $repository, Query $filters)
+    public function __construct(QueryBuilder $query, Query $filters)
     {
-        $this->query = $repository->createQueryBuilder(self::ROOT_ALIAS);
+        $this->query = $query;
+        $this->rootAlias = $this->query->getRootAliases()[0];
         $this->entityManager = $this->query->getEntityManager();
         $this->rawQuery = $filters;
 
@@ -128,7 +128,7 @@ class Doctrine extends AbstractFilter
     {
         return sprintf(
             '%s.%s',
-            $fieldMetadata['relation_alias'] ?? self::ROOT_ALIAS,
+            $fieldMetadata['relation_alias'] ?? $this->rootAlias,
             $fieldMetadata['fieldName']
         );
     }
@@ -170,7 +170,7 @@ class Doctrine extends AbstractFilter
         static $iterator = 1;
 
         if (is_null($alias)) {
-            $alias = self::ROOT_ALIAS;
+            $alias = $this->rootAlias;
         }
 
         if (! isset($this->relations[$alias][$relation])) {
