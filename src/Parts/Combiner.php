@@ -37,8 +37,10 @@ class Combiner extends AbstractCondition
         return $this->conditions;
     }
 
-    public function addCondition(AbstractCondition $condition): void
+    public function addCondition(AbstractCondition $condition): self
     {
         $this->conditions[$condition->getName()] = $condition;
+
+        return $this;
     }
 }
