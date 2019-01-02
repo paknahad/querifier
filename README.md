@@ -1,10 +1,14 @@
+[![Latest Stable Version](https://poser.pugx.org/paknahad/querifier/version)](https://packagist.org/packages/paknahad/querifier)
+[![Build Status](https://travis-ci.org/paknahad/querifier.svg?branch=master)](https://travis-ci.org/paknahad/querifier)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
+
 Querifier
 ============
 
 ## Installing
-    ```
-    composer require paknahad/querifier
-    ```
+```
+composer require paknahad/querifier
+```
 
 ### Simple query
 
