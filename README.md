@@ -1,7 +1,10 @@
-Query Parser
+Querifier
 ============
 
-##<< Under development ... >>
+## Installing
+    ```
+    composer require paknahad/querifier
+    ```
 
 ### Simple query
 
