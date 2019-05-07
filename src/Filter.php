@@ -1,4 +1,5 @@
 <?php
+
 namespace Paknahad\Querifier;
 
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +13,7 @@ class Filter
 
     public function __construct(ServerRequestInterface $request)
     {
-        $parser = Parser::parsFromPsrRequest($request);
+        $parser = Parser::parseFromPsrRequest($request);
         $this->query = $parser->getQuery();
     }
 
@@ -22,7 +23,7 @@ class Filter
             return $this->filterDoctrine($query);
         }
 
-        throw new InvalidQuery('Unknown Query class: ' . get_class($query));
+        throw new InvalidQuery('Unknown Query class: '.\get_class($query));
     }
 
     private function filterDoctrine(QueryBuilder $queryBuilder): QueryBuilder

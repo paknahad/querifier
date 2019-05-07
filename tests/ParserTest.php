@@ -13,15 +13,15 @@ class ParserTest extends TestCase
     /** @dataProvider provideFilterArray */
     public function testQuery(array $filter, $result)
     {
-        $parser = Parser::parsFromArray($filter, []);
+        $parser = Parser::parseFromArray($filter, []);
 
         $query = $parser->getQuery();
-        $condisions = $query->getConditions();
-        $this->assertCount(count($result), $condisions);
+        $conditions = $query->getConditions();
+        $this->assertCount(count($result), $conditions);
 
         foreach ($result as $expectedCombiner) {
             /** @var Combiner $combination */
-            $combination = array_shift($condisions);
+            $combination = array_shift($conditions);
             $this->assertSame($expectedCombiner['operator'], $combination->getOperator());
             $this->assertSame($expectedCombiner['conditionsName'], $combination->getConditionsName());
             $this->assertEquals($expectedCombiner['conditions'], $combination->getConditions());

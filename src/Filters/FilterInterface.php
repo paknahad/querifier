@@ -1,6 +1,6 @@
 <?php
-namespace Paknahad\Querifier\Filters;
 
+namespace Paknahad\Querifier\Filters;
 
 interface FilterInterface
 {

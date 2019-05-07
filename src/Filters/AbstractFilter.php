@@ -1,4 +1,5 @@
 <?php
+
 namespace Paknahad\Querifier\Filters;
 
 use Paknahad\Querifier\Parts\AbstractCondition;
@@ -13,6 +14,9 @@ abstract class AbstractFilter implements FilterInterface
 
     protected $relations = [];
 
+    /**
+     * @return mixed
+     */
     public function getFilteredQuery()
     {
         foreach ($this->rawQuery->getConditions() as $condition) {
@@ -24,7 +28,15 @@ abstract class AbstractFilter implements FilterInterface
         return $this->query;
     }
 
+    /**
+     * Add condition to query.
+     *
+     * @param AbstractCondition $condition
+     */
     abstract protected function setCondition(AbstractCondition $condition): void;
 
+    /**
+     * Join the relations to query.
+     */
     abstract protected function makeRelations(): void;
 }

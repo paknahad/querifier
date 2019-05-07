@@ -1,4 +1,5 @@
 <?php
+
 namespace Paknahad\Querifier\Parts;
 
 class Sort

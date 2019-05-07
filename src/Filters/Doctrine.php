@@ -1,4 +1,5 @@
 <?php
+
 namespace Paknahad\Querifier\Filters;
 
 use Doctrine\ORM\EntityNotFoundException;
@@ -18,6 +19,12 @@ class Doctrine extends AbstractFilter
     protected $rootAlias;
     protected $fields;
 
+    /**
+     * Doctrine constructor.
+     *
+     * @param QueryBuilder $query
+     * @param Query        $filters
+     */
     public function __construct(QueryBuilder $query, Query $filters)
     {
         $this->query = $query;
@@ -31,7 +38,7 @@ class Doctrine extends AbstractFilter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function setCondition(AbstractCondition $condition): void
     {
@@ -39,7 +46,7 @@ class Doctrine extends AbstractFilter
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function makeRelations(): void
     {
@@ -67,16 +74,15 @@ class Doctrine extends AbstractFilter
                     $this->getFieldName($metadata),
                     $this->setValue($condition->getValue(), $condition->getOperator())
                 );
-
         } elseif ($condition instanceof Combiner) {
             $conditions = [];
             foreach ($condition->getConditions() as $subCondition) {
                 $conditions[] = $this->createCondition($subCondition);
             }
 
-            $operator = ($condition->getOperator() == Combiner::OR) ? 'orX' : 'andX';
+            $operator = (Combiner::OR == $condition->getOperator()) ? 'orX' : 'andX';
 
-            return call_user_func_array([$this->query->expr(), $operator], $conditions);
+            return \call_user_func_array([$this->query->expr(), $operator], $conditions);
         }
     }
 
@@ -94,7 +100,7 @@ class Doctrine extends AbstractFilter
         $finalField = array_shift($explodedField);
         $entity = $this->rootEntity;
 
-        if (! empty($explodedField)) {
+        if (!empty($explodedField)) {
             $alias = null;
 
             foreach (array_reverse($explodedField) as $relation) {
@@ -134,7 +140,7 @@ class Doctrine extends AbstractFilter
     }
 
     /**
-     * Set value & return that parameter name
+     * Set value & return that parameter name.
      *
      * @param mixed $value
      *
@@ -144,24 +150,24 @@ class Doctrine extends AbstractFilter
     {
         static $iterator = 0;
 
-        if (is_null($value) || in_array($operator, [Operators::OP_IS_NULL, Operators::OP_IS_NOT_NULL])) {
+        if (null === $value || \in_array($operator, [Operators::OP_IS_NULL, Operators::OP_IS_NOT_NULL])) {
             return null;
         }
 
-        if (in_array($operator, [Operators::OP_IN, Operators::OP_NOT_IN])) {
+        if (\in_array($operator, [Operators::OP_IN, Operators::OP_NOT_IN])) {
             $value = explode(',', $value);
         }
 
         $this->query->setParameter(++$iterator, $value);
 
-        return '?' . $iterator;
+        return '?'.$iterator;
     }
 
     /**
-     * Set relation & return that alias
+     * Set relation & return that alias.
      *
      * @param string      $relation
-     * @param null|string $alias
+     * @param string|null $alias
      *
      * @return string
      */
@@ -169,16 +175,15 @@ class Doctrine extends AbstractFilter
     {
         static $iterator = 1;
 
-        if (is_null($alias)) {
+        if (null === $alias) {
             $alias = $this->rootAlias;
         }
 
-        if (! isset($this->relations[$alias][$relation])) {
-            $newAlias = 'r__' . $iterator++;
+        if (!isset($this->relations[$alias][$relation])) {
+            $newAlias = 'r__'.$iterator++;
 
             $this->relations[$alias][$relation] = $newAlias;
         }
-
 
         return $this->relations[$alias][$relation];
     }
@@ -200,13 +205,14 @@ class Doctrine extends AbstractFilter
      * @param string $relation
      *
      * @return array
+     *
      * @throws EntityNotFoundException
      */
     protected function getRelationMetaData(string $entity, string $relation): array
     {
         $associations = $this->entityManager->getClassMetadata($entity)->associationMappings;
 
-        if (! isset($associations[$relation])) {
+        if (!isset($associations[$relation])) {
             throw new EntityNotFoundException();
         }
 

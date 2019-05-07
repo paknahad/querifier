@@ -1,4 +1,5 @@
 <?php
+
 namespace Paknahad\Querifier;
 
 use Paknahad\Querifier\Exception\InvalidFilter;
@@ -16,36 +17,35 @@ class Parser
         $this->query = new Query();
 
         foreach ($filters as $key => $value) {
-            $this->query->addCondition($this->pars($key, $value));
+            $this->query->addCondition($this->parse($key, $value));
         }
     }
 
-    public static function parsFromPsrRequest(ServerRequestInterface $request): self
+    public static function parseFromPsrRequest(ServerRequestInterface $request): self
     {
         $params = $request->getQueryParams();
 
-        return self::parsFromArray(
+        return self::parseFromArray(
             isset($params['filter']) ? $params['filter'] : [],
             isset($params['sort']) ? $params['sort'] : []
         );
     }
 
-    public static function parsFromArray(array $filters, array $sort): self
+    public static function parseFromArray(array $filters, array $sort): self
     {
         return new self($filters, $sort);
     }
 
-    protected function pars($key, $value, $name = null): AbstractCondition
+    protected function parse($key, $value, $name = null): AbstractCondition
     {
         if (preg_match('/^_/', $key)) {
             if (preg_match(self::COMBINATION_PATTERN, $key, $matches)) {
-
                 return Factory::makeCombiner($matches['operator'], $value, $name);
-            } elseif (is_null($name) && is_array($value)) {
+            } elseif (null === $name && \is_array($value)) {
                 reset($value);
                 $newKey = key($value);
 
-                return $this->pars($newKey, $value[$newKey], $key);
+                return $this->parse($newKey, $value[$newKey], $key);
             }
 
             throw new InvalidFilter();
