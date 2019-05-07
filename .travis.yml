@@ -11,6 +11,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+  - ./vendor/bin/php-cs-fixer fix --dry-run --diff --config php_cs.dist
 
 branches:
   only:
