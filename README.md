@@ -10,6 +10,19 @@ Querifier
 composer require paknahad/querifier
 ```
 
+### Usage
+**Symfony & Doctrine**
+```php
+<?php
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Paknahad\Querifier\Filter;
+...
+    $psrFactory = new DiactorosFactory();
+    $psrRequest = $psrFactory->createRequest($request);
+
+    $filter = new Filter($psrRequest);
+    $filter->applyFilter($repository->createQueryBuilder('alias'));
+```
 ### Simple query
 
 simple query makes by this structure:
@@ -29,7 +42,7 @@ WHERE
     a.name = 'hamid'
 ```
 
-###Advanced query:
+### Advanced query:
 **1- Define conditions.**
 ```http request
 url?filter[CONDITION NAME][FIELD NAME][OPERATOR]=VALUE
@@ -40,7 +53,7 @@ url?filter[CONDITION NAME][COMBINE]=CONDITIONS SEPARATED BY “,”
 ```
 
 - **Condition name**_(optional)_ : An identifier for using in combinations, must be started by “_”  and followed by AlphaNumeric characters
-- **Operator name**_(optional , Default: \_eq)_ : Name of an operator such as _eq, _not_eq, _in, _gt, _lt, _like, _btwn.
+- **Operator name**_(optional , Default: \_eq)_ : Name of an operator such as _eq, _not_eq, _in, _gt, _lt, _like.
 - **Combine** : use to combine two or more conditions : _cmb_or , _cmb_and
 
 Example:
@@ -64,3 +77,8 @@ WHERE
      )
 ```
 
+### Sorting 
+- Ascending on name field: `http://example.com/books?sort=name`
+- Decending on name field: `http://example.com/books?sort=-name`
+- Multiple fields: `http://example.com/books?sort=city,-name`
+- Field on a relation: `http://example.com/books?sort=author.name`

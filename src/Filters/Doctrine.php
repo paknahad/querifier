@@ -14,9 +14,18 @@ use Paknahad\Querifier\Query;
 
 class Doctrine extends AbstractFilter
 {
+    /** @var \Doctrine\ORM\EntityManager */
     protected $entityManager;
+
     protected $rootEntity;
+
+    /** @var string */
     protected $rootAlias;
+
+    /** @var array */
+    protected $sortingFields;
+
+    /** @var array */
     protected $fields;
 
     /**
@@ -25,12 +34,13 @@ class Doctrine extends AbstractFilter
      * @param QueryBuilder $query
      * @param Query        $filters
      */
-    public function __construct(QueryBuilder $query, Query $filters)
+    public function __construct(QueryBuilder $query, Query $filters, array $sorting)
     {
         $this->query = $query;
         $this->rootAlias = $this->query->getRootAliases()[0];
         $this->entityManager = $this->query->getEntityManager();
         $this->rawQuery = $filters;
+        $this->sortingFields = $sorting;
 
         $this->rootEntity = $this->query->getRootEntities()[0];
 
@@ -142,7 +152,8 @@ class Doctrine extends AbstractFilter
     /**
      * Set value & return that parameter name.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $operator
      *
      * @return string
      */
@@ -186,6 +197,19 @@ class Doctrine extends AbstractFilter
         }
 
         return $this->relations[$alias][$relation];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws EntityNotFoundException
+     */
+    protected function sortQuery(): void
+    {
+        foreach ($this->sortingFields as $field) {
+            $fieldName = $this->getFieldName($this->getFieldMetaData($field['field']));
+            $this->query->addOrderBy($fieldName, $field['direction']);
+        }
     }
 
     /**

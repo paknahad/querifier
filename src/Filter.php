@@ -10,11 +10,13 @@ use Psr\Http\Message\ServerRequestInterface;
 class Filter
 {
     private $query;
+    private $sortingFields;
 
     public function __construct(ServerRequestInterface $request)
     {
         $parser = Parser::parseFromPsrRequest($request);
         $this->query = $parser->getQuery();
+        $this->sortingFields = $parser->getSorting();
     }
 
     public function applyFilter($query)
@@ -28,7 +30,7 @@ class Filter
 
     private function filterDoctrine(QueryBuilder $queryBuilder): QueryBuilder
     {
-        $finder = new Doctrine($queryBuilder, $this->query);
+        $finder = new Doctrine($queryBuilder, $this->query, $this->sortingFields);
 
         return $finder->getFilteredQuery();
     }

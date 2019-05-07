@@ -10,14 +10,22 @@ class Parser
 {
     const COMBINATION_PATTERN = '/^_cmb_(?P<operator>[a-z]{2,3})$/';
 
+    /** @var Query */
     protected $query;
+
+    /** @var array */
+    protected $sortingFields = [];
 
     protected function __construct(array $filters, array $sort)
     {
         $this->query = new Query();
 
         foreach ($filters as $key => $value) {
-            $this->query->addCondition($this->parse($key, $value));
+            $this->query->addCondition($this->parseConditions($key, $value));
+        }
+
+        foreach ($sort as $value) {
+            $this->sortingFields[] = $this->parseSortingFields($value);
         }
     }
 
@@ -27,7 +35,7 @@ class Parser
 
         return self::parseFromArray(
             isset($params['filter']) ? $params['filter'] : [],
-            isset($params['sort']) ? $params['sort'] : []
+            isset($params['sort']) ? explode(',', $params['sort']) : []
         );
     }
 
@@ -36,7 +44,28 @@ class Parser
         return new self($filters, $sort);
     }
 
-    protected function parse($key, $value, $name = null): AbstractCondition
+    /**
+     * Process an individual field.
+     *
+     * @param string $field
+     *
+     * @return array
+     */
+    protected function parseSortingFields(string $field): array
+    {
+        $direction = 'ASC';
+        if ('-' !== $field[0]) {
+            $field = ltrim($field, '-');
+            $direction = 'DESC';
+        }
+
+        return [
+            'field' => $field,
+            'direction' => $direction,
+        ];
+    }
+
+    protected function parseConditions($key, $value, $name = null): AbstractCondition
     {
         if (preg_match('/^_/', $key)) {
             if (preg_match(self::COMBINATION_PATTERN, $key, $matches)) {
@@ -45,7 +74,7 @@ class Parser
                 reset($value);
                 $newKey = key($value);
 
-                return $this->parse($newKey, $value[$newKey], $key);
+                return $this->parseConditions($newKey, $value[$newKey], $key);
             }
 
             throw new InvalidFilter();
@@ -57,5 +86,15 @@ class Parser
     public function getQuery(): Query
     {
         return $this->query->rearrange();
+    }
+
+    /**
+     * Get array of fields for sorting.
+     *
+     * @return array
+     */
+    public function getSorting(): array
+    {
+        return $this->sortingFields;
     }
 }

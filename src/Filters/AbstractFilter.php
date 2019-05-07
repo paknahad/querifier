@@ -25,6 +25,8 @@ abstract class AbstractFilter implements FilterInterface
 
         $this->makeRelations();
 
+        $this->sortQuery();
+
         return $this->query;
     }
 
@@ -39,4 +41,9 @@ abstract class AbstractFilter implements FilterInterface
      * Join the relations to query.
      */
     abstract protected function makeRelations(): void;
+
+    /**
+     * Apply sorting.
+     */
+    abstract protected function sortQuery(): void;
 }
