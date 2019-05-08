@@ -33,6 +33,15 @@ class Condition extends AbstractCondition
     }
 
     /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        static $increment;
+        $this->name = $name ?? '___condition___'.++$increment;
+    }
+
+    /**
      * @return string
      */
     public function getField(): string

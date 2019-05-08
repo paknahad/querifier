@@ -1,6 +1,6 @@
 <?php
 
-namespace Paknahad\Querifier\Tests;
+namespace Paknahad\Querifier\Tests\Parser;
 
 use Paknahad\Querifier\Operators;
 use Paknahad\Querifier\Parser;
@@ -8,29 +8,28 @@ use Paknahad\Querifier\Parts\Combiner;
 use Paknahad\Querifier\Parts\Condition;
 use PHPUnit\Framework\TestCase;
 
-class ParserTest extends TestCase
+class CriteriaTest extends TestCase
 {
     /** @dataProvider provideFilterArray */
-    public function testQuery(array $filter, $result)
+    public function testQuery(array $filterForCriteria, $result)
     {
-        $parser = Parser::parseFromArray($filter, []);
+        $criteriaParser = Parser\Criteria::parseFromArray($filterForCriteria, []);
 
-        $query = $parser->getQuery();
-        $conditions = $query->getConditions();
-        $this->assertCount(count($result), $conditions);
+        $criteriaConditions = $criteriaParser->getQuery()->getConditions();
+        $this->assertCount(count($result), $criteriaConditions);
 
         foreach ($result as $expectedCombiner) {
-            /** @var Combiner $combination */
-            $combination = array_shift($conditions);
-            $this->assertSame($expectedCombiner['operator'], $combination->getOperator());
-            $this->assertSame($expectedCombiner['conditionsName'], $combination->getConditionsName());
-            $this->assertEquals($expectedCombiner['conditions'], $combination->getConditions());
+            /** @var Combiner $criteriaCombination */
+            $criteriaCombination = array_shift($criteriaConditions);
+            $this->assertSame($expectedCombiner['operator'], $criteriaCombination->getOperator());
+            $this->assertSame($expectedCombiner['conditionsName'], $criteriaCombination->getConditionsName());
+            $this->assertEquals($expectedCombiner['conditions'], $criteriaCombination->getConditions());
         }
     }
 
     public function provideFilterArray()
     {
-        yield[
+        yield [
             [
                 '_c1' => ['name' => [Operators::OP_LIKE => '%test']],
                 '_c2' => ['book.title' => [Operators::OP_NOT_LIKE => '%test']],
@@ -47,6 +46,7 @@ class ParserTest extends TestCase
                 ],
             ],
         ];
+
         yield[
             [
                 '_c1' => ['name' => [Operators::OP_LIKE => '%test']],
@@ -62,14 +62,15 @@ class ParserTest extends TestCase
                     'conditions' => [
                         '_c4' => new Condition('book.id', Operators::OP_IN, '2,3', '_c4'),
                         '_c3' => (
-                            (new Combiner('or', ['_c1', '_c2'], '_c3'))
-                                ->addCondition(new Condition('name', Operators::OP_LIKE, '%test', '_c1'))
-                                ->addCondition(new Condition('book.title', Operators::OP_NOT_LIKE, '%test', '_c2'))
+                        (new Combiner('or', ['_c1', '_c2'], '_c3'))
+                            ->addCondition(new Condition('name', Operators::OP_LIKE, '%test', '_c1'))
+                            ->addCondition(new Condition('book.title', Operators::OP_NOT_LIKE, '%test', '_c2'))
                         ),
                     ],
                 ],
             ],
         ];
+
         yield[
             [
                 '_c1' => ['name' => [Operators::OP_LIKE => '%test']],

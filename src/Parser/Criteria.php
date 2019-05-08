@@ -1,21 +1,29 @@
 <?php
 
-namespace Paknahad\Querifier;
+namespace Paknahad\Querifier\Parser;
 
 use Paknahad\Querifier\Exception\InvalidFilter;
+use Paknahad\Querifier\Factory;
 use Paknahad\Querifier\Parts\AbstractCondition;
+use Paknahad\Querifier\Query;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Parser
+class Criteria extends AbstractParser
 {
     const COMBINATION_PATTERN = '/^_cmb_(?P<operator>[a-z]{2,3})$/';
 
     /** @var Query */
     protected $query;
 
-    /** @var array */
-    protected $sortingFields = [];
-
+    /**
+     * Separated constructor.
+     *
+     * @param array $filters
+     * @param array $sort
+     *
+     * @throws InvalidFilter
+     * @throws \Paknahad\Querifier\Exception\InvalidOperator
+     */
     protected function __construct(array $filters, array $sort)
     {
         $this->query = new Query();
@@ -29,7 +37,10 @@ class Parser
         }
     }
 
-    public static function parseFromPsrRequest(ServerRequestInterface $request): self
+    /**
+     * @inheritDoc
+     */
+    public static function parseFromPsrRequest(ServerRequestInterface $request): AbstractParser
     {
         $params = $request->getQueryParams();
 
@@ -39,33 +50,29 @@ class Parser
         );
     }
 
+    /**
+     * @param array $filters
+     * @param array $sort
+     *
+     * @return Criteria
+     * @throws InvalidFilter
+     * @throws \Paknahad\Querifier\Exception\InvalidOperator
+     */
     public static function parseFromArray(array $filters, array $sort): self
     {
         return new self($filters, $sort);
     }
 
     /**
-     * Process an individual field.
+     * @param string      $key
+     * @param mixed       $value
+     * @param string|null $name
      *
-     * @param string $field
-     *
-     * @return array
+     * @return AbstractCondition
+     * @throws InvalidFilter
+     * @throws \Paknahad\Querifier\Exception\InvalidOperator
      */
-    protected function parseSortingFields(string $field): array
-    {
-        $direction = 'ASC';
-        if ('-' !== $field[0]) {
-            $field = ltrim($field, '-');
-            $direction = 'DESC';
-        }
-
-        return [
-            'field' => $field,
-            'direction' => $direction,
-        ];
-    }
-
-    protected function parseConditions($key, $value, $name = null): AbstractCondition
+    protected function parseConditions(string $key, $value, $name = null): AbstractCondition
     {
         if (preg_match('/^_/', $key)) {
             if (preg_match(self::COMBINATION_PATTERN, $key, $matches)) {
@@ -83,18 +90,11 @@ class Parser
         return Factory::makeCondition($key, $value, $name);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getQuery(): Query
     {
         return $this->query->rearrange();
-    }
-
-    /**
-     * Get array of fields for sorting.
-     *
-     * @return array
-     */
-    public function getSorting(): array
-    {
-        return $this->sortingFields;
     }
 }

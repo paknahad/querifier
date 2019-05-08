@@ -10,11 +10,7 @@ abstract class AbstractCondition implements ConditionInterface
     /**
      * @param string|null $name
      */
-    public function setName(?string $name): void
-    {
-        static $increment;
-        $this->name = $name ?? '___condition___'.++$increment;
-    }
+    abstract public function setName(?string $name): void;
 
     /**
      * @return string

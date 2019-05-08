@@ -38,6 +38,15 @@ class Combiner extends AbstractCondition
     }
 
     /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        static $increment;
+        $this->name = $name ?? '___combination___'.++$increment;
+    }
+
+    /**
      * @return array
      */
     public function getConditionsName(): array

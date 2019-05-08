@@ -5,6 +5,9 @@ namespace Paknahad\Querifier;
 use Doctrine\ORM\QueryBuilder;
 use Paknahad\Querifier\Exception\InvalidQuery;
 use Paknahad\Querifier\Filters\Doctrine;
+use Paknahad\Querifier\Parser\AbstractParser;
+use Paknahad\Querifier\Parser\Criteria;
+use Paknahad\Querifier\Parser\Expression;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Filter
@@ -14,7 +17,8 @@ class Filter
 
     public function __construct(ServerRequestInterface $request)
     {
-        $parser = Parser::parseFromPsrRequest($request);
+        $parser = $this->getParser($request);
+
         $this->query = $parser->getQuery();
         $this->sortingFields = $parser->getSorting();
     }
@@ -33,5 +37,14 @@ class Filter
         $finder = new Doctrine($queryBuilder, $this->query, $this->sortingFields);
 
         return $finder->getFilteredQuery();
+    }
+
+    private function getParser(ServerRequestInterface $request): AbstractParser
+    {
+        if ($request->getAttribute('q')) {
+            return Expression::parseFromPsrRequest($request);
+        }
+
+        return Criteria::parseFromPsrRequest($request);
     }
 }
