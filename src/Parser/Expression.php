@@ -65,7 +65,7 @@ class Expression extends AbstractParser
     {
         return new self(
             $queryString,
-            !is_null($sort) ? explode(',', $sort) : []
+            null !== $sort ? explode(',', $sort) : []
         );
     }
 
@@ -134,7 +134,7 @@ class Expression extends AbstractParser
             $conditionsName[] = $part->getName();
         }
 
-        if (1 == count($parts)) {
+        if (1 == \count($parts)) {
             return $parts[0];
         }
 
@@ -154,7 +154,7 @@ class Expression extends AbstractParser
      */
     private function generateCondition(string $query): ConditionInterface
     {
-        if (self::CONDITION_NAME_PREFIX == substr($query, 0, strlen(self::CONDITION_NAME_PREFIX))) {
+        if (self::CONDITION_NAME_PREFIX == substr($query, 0, \strlen(self::CONDITION_NAME_PREFIX))) {
             return $this->parts[$query];
         }
 
@@ -200,13 +200,14 @@ class Expression extends AbstractParser
      */
     private function findOperator(string $operator, string &$value): string
     {
-        if (in_array($operator, [Operators::OP_NOT_EQUAL, Operators::OP_EQUAL])) {
+        if (\in_array($operator, [Operators::OP_NOT_EQUAL, Operators::OP_EQUAL])) {
             if ('null' === strtolower($value)) {
                 return (Operators::OP_EQUAL == $operator) ? Operators::OP_IS_NULL : Operators::OP_IS_NOT_NULL;
             } elseif (false !== strpos($value, '%')) {
                 return (Operators::OP_EQUAL == $operator) ? Operators::OP_LIKE : Operators::OP_NOT_LIKE;
             } elseif ('[' == substr($value, 0, 1) && ']' == substr($value, -1, 1)) {
                 $value = rtrim(ltrim($value, '['), ']');
+
                 return (Operators::OP_EQUAL == $operator) ? Operators::OP_IN : Operators::OP_NOT_IN;
             }
         }

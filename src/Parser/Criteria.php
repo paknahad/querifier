@@ -38,7 +38,7 @@ class Criteria extends AbstractParser
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function parseFromPsrRequest(ServerRequestInterface $request): AbstractParser
     {
@@ -55,6 +55,7 @@ class Criteria extends AbstractParser
      * @param array $sort
      *
      * @return Criteria
+     *
      * @throws InvalidFilter
      * @throws \Paknahad\Querifier\Exception\InvalidOperator
      */
@@ -69,6 +70,7 @@ class Criteria extends AbstractParser
      * @param string|null $name
      *
      * @return AbstractCondition
+     *
      * @throws InvalidFilter
      * @throws \Paknahad\Querifier\Exception\InvalidOperator
      */
@@ -91,7 +93,7 @@ class Criteria extends AbstractParser
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getQuery(): Query
     {

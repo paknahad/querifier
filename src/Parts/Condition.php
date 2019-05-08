@@ -23,7 +23,7 @@ class Condition extends AbstractCondition
     public function __construct(string $field, string $operator, string $value, ?string $name = null)
     {
         if (!\in_array($operator, array_keys(Operators::OPERATORS))) {
-            throw new InvalidOperator('Invalid Operator');
+            throw new InvalidOperator('Invalid Operator: '.$operator);
         }
 
         $this->field = $field;

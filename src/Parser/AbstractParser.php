@@ -14,7 +14,7 @@ abstract class AbstractParser
     protected $sortingFields = [];
 
     /**
-     * Get query from request and parse that
+     * Get query from request and parse that.
      *
      * @param ServerRequestInterface $request
      *
@@ -23,7 +23,7 @@ abstract class AbstractParser
     abstract public static function parseFromPsrRequest(ServerRequestInterface $request): self;
 
     /**
-     * Return parsed query
+     * Return parsed query.
      *
      * @return Query
      */

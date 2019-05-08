@@ -3,6 +3,7 @@
 namespace Paknahad\Querifier\Parts;
 
 use Paknahad\Querifier\Exception\InvalidFilter;
+use Paknahad\Querifier\Exception\InvalidOperator;
 
 class Combiner extends AbstractCondition
 {
@@ -29,7 +30,7 @@ class Combiner extends AbstractCondition
     public function __construct(string $operator, array $conditionsName, ?string $name = null)
     {
         if (!\in_array($operator, $this->validOperators)) {
-            throw new InvalidFilter('Invalid Operator');
+            throw new InvalidOperator('Invalid Operator: '.$operator);
         }
 
         $this->operator = $operator;
