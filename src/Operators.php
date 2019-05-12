@@ -5,8 +5,8 @@ namespace Paknahad\Querifier;
 class Operators
 {
     const OP_EQUAL = '_eq';
-    const OP_GRATER_THAN = '_gt';
-    const OP_LOWER_THAN = '_lt';
+    const OP_GREATER_THAN = '_gt';
+    const OP_LESS_THAN = '_lt';
     const OP_NOT_EQUAL = '_not_eq';
     const OP_IS_NULL = '_null';
     const OP_IS_NOT_NULL = '_not_null';
@@ -16,14 +16,15 @@ class Operators
     const OP_NOT_LIKE = '_not_like';
 
     const OPERATORS = [
-        self::OP_EQUAL => ['sql' => '=',
+        self::OP_EQUAL => [
+            'sql' => '=',
             'doctrine' => 'eq',
         ],
-        self::OP_GRATER_THAN => [
+        self::OP_GREATER_THAN => [
             'sql' => '>',
             'doctrine' => 'gt',
         ],
-        self::OP_LOWER_THAN => [
+        self::OP_LESS_THAN => [
             'sql' => '<',
             'doctrine' => 'lt',
         ],
@@ -52,7 +53,7 @@ class Operators
             'doctrine' => 'like',
         ],
         self::OP_NOT_LIKE => [
-            'sql' => 'LIKE',
+            'sql' => 'NOT LIKE',
             'doctrine' => 'notLike',
         ],
     ];

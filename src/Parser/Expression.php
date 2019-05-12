@@ -26,8 +26,8 @@ class Expression extends AbstractParser
     const COMPARISON_OPERATORS = [
         '<>' => Operators::OP_NOT_EQUAL,
         ':' => Operators::OP_EQUAL,
-        '>' => Operators::OP_GRATER_THAN,
-        '<' => Operators::OP_LOWER_THAN,
+        '>' => Operators::OP_GREATER_THAN,
+        '<' => Operators::OP_LESS_THAN,
     ];
 
     /** @var Query */
@@ -87,6 +87,10 @@ class Expression extends AbstractParser
     private function generateQuery(string $queryString): void
     {
         static $i;
+
+        if ('' == $queryString) {
+            return;
+        }
 
         $start = strrpos($queryString, '(');
 
