@@ -39,7 +39,7 @@ abstract class AbstractParser
     protected function parseSortingFields(string $field): array
     {
         $direction = 'ASC';
-        if ('-' !== $field[0]) {
+        if ('-' === $field[0]) {
             $field = ltrim($field, '-');
             $direction = 'DESC';
         }
