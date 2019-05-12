@@ -7,23 +7,57 @@ use Paknahad\Querifier\Parser;
 use Paknahad\Querifier\Parts\Combiner;
 use Paknahad\Querifier\Parts\Condition;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
 
 class CriteriaTest extends TestCase
 {
-    /** @dataProvider provideFilterArray */
-    public function testQuery(array $filterForCriteria, $result)
+    public function testSorting()
     {
-        $criteriaParser = Parser\Criteria::parseFromArray($filterForCriteria, []);
+        $requestMock = $this->createMock(ServerRequestInterface::class);
 
-        $criteriaConditions = $criteriaParser->getQuery()->getConditions();
-        $this->assertCount(count($result), $criteriaConditions);
+        $requestMock->method('getQueryParams')->willReturn(['sort' => 'name,-book.title']);
+        $parser = Parser\Criteria::parseFromPsrRequest($requestMock);
+
+        $this->assertSame(
+            [
+                [
+                    'field' => 'name',
+                    'direction' => 'ASC',
+                ],
+                [
+                    'field' => 'book.title',
+                    'direction' => 'DESC',
+                ],
+            ],
+            $parser->getSorting()
+        );
+    }
+
+    /**
+     * @expectedException Paknahad\Querifier\Exception\InvalidFilter
+     */
+    public function testInvalidFilter()
+    {
+        Parser\Criteria::parseFromArray(['_invalid' => '%test'], []);
+    }
+
+    /** @dataProvider provideFilterArray */
+    public function testQuery(array $filters, $result)
+    {
+        $requestMock = $this->createMock(ServerRequestInterface::class);
+
+        $requestMock->method('getQueryParams')->willReturn(['filter' => $filters]);
+        $parser = Parser\Criteria::parseFromPsrRequest($requestMock);
+
+        $conditions = $parser->getQuery()->getConditions();
+        $this->assertCount(count($result), $conditions);
 
         foreach ($result as $expectedCombiner) {
-            /** @var Combiner $criteriaCombination */
-            $criteriaCombination = array_shift($criteriaConditions);
-            $this->assertSame($expectedCombiner['operator'], $criteriaCombination->getOperator());
-            $this->assertSame($expectedCombiner['conditionsName'], $criteriaCombination->getConditionsName());
-            $this->assertEquals($expectedCombiner['conditions'], $criteriaCombination->getConditions());
+            /** @var Combiner $combination */
+            $combination = array_shift($conditions);
+            $this->assertSame($expectedCombiner['operator'], $combination->getOperator());
+            $this->assertSame($expectedCombiner['conditionsName'], $combination->getConditionsName());
+            $this->assertEquals($expectedCombiner['conditions'], $combination->getConditions());
         }
     }
 
