@@ -23,13 +23,14 @@ use Paknahad\Querifier\Filter;
     $filter = new Filter($psrRequest);
     $filter->applyFilter($repository->createQueryBuilder('alias'));
 ```
-### Simple query
 
-simple query makes by this structure:
+## Examples:
+
+Expression:
 ```http request
-url?filter[FIELD_NAME]=VALUE
+http://example.com/books?q=title:php^author.name:hamid
 ```
-Example:
+Criteria:
 ```http request
 http://example.com/books?filter[title]=php&filter[author.name]=hamid
 ```
@@ -43,20 +44,12 @@ WHERE
 ```
 
 ### Advanced query:
-**1- Define conditions.**
-```http request
-url?filter[CONDITION NAME][FIELD NAME][OPERATOR]=VALUE
-```
-**2- Combine these conditions together.**
-```http request
-url?filter[CONDITION NAME][COMBINE]=CONDITIONS SEPARATED BY “,”
-```
 
-- **Condition name**_(optional)_ : An identifier for using in combinations, must be started by “_”  and followed by AlphaNumeric characters
-- **Operator name**_(optional , Default: \_eq)_ : Name of an operator such as _eq, _not_eq, _in, _gt, _lt, _like.
-- **Combine** : use to combine two or more conditions : _cmb_or , _cmb_and
-
-Example:
+Expression:
+```http request
+http://example.com/books?q=title:php^(author.name:%hamid%|(publish_date>2017-1-1^publish_date<2017-6-1))
+```
+Criteria:
 ```http request
 books?filter[title]=php&filter[_c1][author.name][_like]=%hamid%&filter[_c2][publish_date][_gt]=2017-1-1&filter[_c3][publish_date][_lt]=2017-6-1]&filter[_c4][_cmb_and]=_c2,_c3&filter[_cmb_or]=_c4,_c1
 ```
@@ -76,6 +69,48 @@ WHERE
         a.name LIKE '%hamid%'
      )
 ```
+
+## Expression Parser
+### Simple query
+
+simple query makes by this structure:
+```http request
+example.com?q=FIELD_NAME:VALUE
+```
+
+### Advanced query:
+**Logical Operators:**
+ - ```^``` -> ```AND```
+ - ```|``` -> ```OR```
+
+**Comparision Operators:**
+ - ```:``` -> ```Equal``` or ```LIKE``` in case there is a ```%``` in value.
+ - ```:null``` => ```IS NULL```
+ - ```<>``` -> ```Not Equal``` or ```NOT LIKE``` in case there is a ```%``` in value.
+ - ```<>null``` => ```IS NOT NULL```
+ - ```>``` -> ```Greather than```
+ - ```<``` -> ```Less than```
+
+## Criteria Parser
+### Simple query
+
+simple query makes by this structure:
+```http request
+url?filter[FIELD_NAME]=VALUE
+```
+### Advanced query:
+**1- Define conditions.**
+```http request
+url?filter[CONDITION NAME][FIELD NAME][OPERATOR]=VALUE
+```
+**2- Combine these conditions together.**
+```http request
+url?filter[CONDITION NAME][COMBINE]=CONDITIONS SEPARATED BY “,”
+```
+
+- **Condition name**_(optional)_ : An identifier for using in combinations, must be started by “_”  and followed by AlphaNumeric characters
+- **Operator name**_(optional , Default: \_eq)_ : Name of an operator such as _eq, _not_eq, _in, _gt, _lt, _like.
+- **Combine** : use to combine two or more conditions : _cmb_or , _cmb_and
 
 ### Sorting 
 - Ascending on name field: `http://example.com/books?sort=name`
