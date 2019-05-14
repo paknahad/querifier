@@ -41,7 +41,9 @@ class Filter
 
     private function getParser(ServerRequestInterface $request): AbstractParser
     {
-        if ($request->getAttribute('q')) {
+        $params = $request->getQueryParams();
+
+        if ($params['q']) {
             return Expression::parseFromPsrRequest($request);
         }
 

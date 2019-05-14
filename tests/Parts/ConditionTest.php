@@ -3,7 +3,6 @@
 namespace Paknahad\Querifier\Tests\Parts;
 
 use Paknahad\Querifier\Operators;
-use Paknahad\Querifier\Parts\Combiner;
 use Paknahad\Querifier\Parts\Condition;
 use PHPUnit\Framework\TestCase;
 
