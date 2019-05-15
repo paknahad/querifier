@@ -24,12 +24,12 @@ class FilterTest extends TestCase
     }
 
     /** @dataProvider provideFilter */
-    public function testParserChoose($hasParameterQ, $parserClass)
+    public function testParserChoose($filterParameter, $parserClass)
     {
         $parserReflection = self::getMethod('getParser');
 
         $requestMock = $this->createMock(ServerRequestInterface::class);
-        $requestMock->method('getAttribute')->willReturn($hasParameterQ);
+        $requestMock->method('getQueryParams')->willReturn($filterParameter);
 
         $filter = new Filter($requestMock);
 
@@ -39,12 +39,12 @@ class FilterTest extends TestCase
     public function provideFilter()
     {
         yield [
-            true,
+            ['q' => 'title:test'],
             Expression::class,
         ];
 
         yield [
-            false,
+            ['filter' => ['title' => 'test']],
             Criteria::class,
         ];
     }

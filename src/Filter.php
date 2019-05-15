@@ -43,7 +43,7 @@ class Filter
     {
         $params = $request->getQueryParams();
 
-        if ($params['q']) {
+        if (isset($params['q'])) {
             return Expression::parseFromPsrRequest($request);
         }
 
