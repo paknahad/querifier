@@ -23,9 +23,9 @@ abstract class AbstractFilter implements FilterInterface
             $this->setCondition($condition);
         }
 
-        $this->makeRelations();
-
         $this->sortQuery();
+
+        $this->makeRelations();
 
         return $this->query;
     }

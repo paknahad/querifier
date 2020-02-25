@@ -33,6 +33,7 @@ class Doctrine extends AbstractFilter
      *
      * @param QueryBuilder $query
      * @param Query        $filters
+     * @param array        $sorting
      */
     public function __construct(QueryBuilder $query, Query $filters, array $sorting)
     {
