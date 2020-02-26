@@ -58,12 +58,6 @@ class Operators
         ],
     ];
 
-    /**
-     * @param string $operator
-     * @param string $queryType
-     *
-     * @return string
-     */
     public static function getOperator(string $operator, string $queryType): string
     {
         return self::OPERATORS[$operator][$queryType];

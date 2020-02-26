@@ -32,8 +32,6 @@ abstract class AbstractFilter implements FilterInterface
 
     /**
      * Add condition to query.
-     *
-     * @param AbstractCondition $condition
      */
     abstract protected function setCondition(AbstractCondition $condition): void;
 

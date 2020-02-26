@@ -13,11 +13,6 @@ class Condition extends AbstractCondition
     /**
      * Condition constructor.
      *
-     * @param string      $field
-     * @param string      $operator
-     * @param string      $value
-     * @param string|null $name
-     *
      * @throws InvalidOperator
      */
     public function __construct(string $field, string $operator, string $value, ?string $name = null)
@@ -32,26 +27,17 @@ class Condition extends AbstractCondition
         $this->setName($name);
     }
 
-    /**
-     * @param string|null $name
-     */
     public function setName(?string $name): void
     {
         static $increment;
         $this->name = $name ?? '___condition___'.++$increment;
     }
 
-    /**
-     * @return string
-     */
     public function getField(): string
     {
         return $this->field;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;

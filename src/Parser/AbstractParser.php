@@ -16,25 +16,17 @@ abstract class AbstractParser
     /**
      * Get query from request and parse that.
      *
-     * @param ServerRequestInterface $request
-     *
      * @return AbstractParser
      */
     abstract public static function parseFromPsrRequest(ServerRequestInterface $request): self;
 
     /**
      * Return parsed query.
-     *
-     * @return Query
      */
     abstract public function getQuery(): Query;
 
     /**
      * Process an individual field.
-     *
-     * @param string $field
-     *
-     * @return array
      */
     protected function parseSortingFields(string $field): array
     {
@@ -52,8 +44,6 @@ abstract class AbstractParser
 
     /**
      * Get array of fields for sorting.
-     *
-     * @return array
      */
     public function getSorting(): array
     {

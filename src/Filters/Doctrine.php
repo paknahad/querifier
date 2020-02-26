@@ -30,10 +30,6 @@ class Doctrine extends AbstractFilter
 
     /**
      * Doctrine constructor.
-     *
-     * @param QueryBuilder $query
-     * @param Query        $filters
-     * @param array        $sorting
      */
     public function __construct(QueryBuilder $query, Query $filters, array $sorting)
     {
@@ -69,8 +65,6 @@ class Doctrine extends AbstractFilter
     }
 
     /**
-     * @param AbstractCondition $condition
-     *
      * @return Comparison|Composite
      *
      * @throws EntityNotFoundException
@@ -98,10 +92,6 @@ class Doctrine extends AbstractFilter
     }
 
     /**
-     * @param string $fieldName
-     *
-     * @return array
-     *
      * @throws EntityNotFoundException
      */
     protected function getFieldMetaData(string $fieldName): array
@@ -136,11 +126,6 @@ class Doctrine extends AbstractFilter
         return $fieldMetaData;
     }
 
-    /**
-     * @param array $fieldMetadata
-     *
-     * @return string
-     */
     protected function getFieldName(array $fieldMetadata): string
     {
         return sprintf(
@@ -153,8 +138,7 @@ class Doctrine extends AbstractFilter
     /**
      * Set value & return that parameter name.
      *
-     * @param mixed  $value
-     * @param string $operator
+     * @param mixed $value
      *
      * @return string
      */
@@ -177,11 +161,6 @@ class Doctrine extends AbstractFilter
 
     /**
      * Set relation & return that alias.
-     *
-     * @param string      $relation
-     * @param string|null $alias
-     *
-     * @return string
      */
     protected function setRelation(string $relation, ?string $alias): string
     {
@@ -213,9 +192,6 @@ class Doctrine extends AbstractFilter
         }
     }
 
-    /**
-     * @param string $entity
-     */
     protected function setAvailableFields(string $entity): void
     {
         if (isset($this->fields[$entity])) {
@@ -226,11 +202,6 @@ class Doctrine extends AbstractFilter
     }
 
     /**
-     * @param string $entity
-     * @param string $relation
-     *
-     * @return array
-     *
      * @throws EntityNotFoundException
      */
     protected function getRelationMetaData(string $entity, string $relation): array

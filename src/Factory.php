@@ -9,11 +9,7 @@ use Paknahad\Querifier\Parts\Condition;
 class Factory
 {
     /**
-     * @param string      $field
-     * @param mixed       $value
-     * @param string|null $name
-     *
-     * @return Condition
+     * @param mixed $value
      *
      * @throws Exception\InvalidOperator
      */
@@ -31,12 +27,6 @@ class Factory
     }
 
     /**
-     * @param string      $operator
-     * @param string      $value
-     * @param string|null $name
-     *
-     * @return Combiner
-     *
      * @throws InvalidFilter
      */
     public static function makeCombiner(string $operator, string $value, string $name = null): Combiner

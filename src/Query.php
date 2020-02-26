@@ -10,17 +10,11 @@ class Query
     private $conditions = [];
     private $children = [];
 
-    /**
-     * @param AbstractCondition $condition
-     */
     public function addCondition(AbstractCondition $condition): void
     {
         $this->conditions[$condition->getName()] = $condition;
     }
 
-    /**
-     * @return array
-     */
     public function getConditions(): array
     {
         return $this->conditions;
@@ -42,12 +36,6 @@ class Query
         return $this;
     }
 
-    /**
-     * @param AbstractCondition $condition
-     * @param bool              $isChild
-     *
-     * @return AbstractCondition
-     */
     private function getCombinedConditions(AbstractCondition $condition, bool $isChild = false): AbstractCondition
     {
         if ($condition instanceof Combiner) {

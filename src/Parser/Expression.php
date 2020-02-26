@@ -78,8 +78,6 @@ class Expression extends AbstractParser
     }
 
     /**
-     * @param string $queryString
-     *
      * @throws InvalidQueryString
      * @throws \Paknahad\Querifier\Exception\InvalidFilter
      * @throws \Paknahad\Querifier\Exception\InvalidOperator
@@ -117,9 +115,6 @@ class Expression extends AbstractParser
     }
 
     /**
-     * @param string $conditions
-     * @param string $operator
-     *
      * @return Combiner
      *
      * @throws \Paknahad\Querifier\Exception\InvalidFilter
@@ -149,10 +144,6 @@ class Expression extends AbstractParser
     }
 
     /**
-     * @param string $query
-     *
-     * @return ConditionInterface
-     *
      * @throws \Paknahad\Querifier\Exception\InvalidOperator
      * @throws InvalidQueryString
      */
@@ -171,10 +162,6 @@ class Expression extends AbstractParser
     }
 
     /**
-     * @param string $query
-     *
-     * @return array
-     *
      * @throws InvalidQueryString
      */
     private function explodeCondition(string $query): array
@@ -196,12 +183,6 @@ class Expression extends AbstractParser
         throw new InvalidQueryString('Invalid condition: '.$query);
     }
 
-    /**
-     * @param string $operator
-     * @param string $value
-     *
-     * @return string
-     */
     private function findOperator(string $operator, string &$value): string
     {
         if (\in_array($operator, [Operators::OP_NOT_EQUAL, Operators::OP_EQUAL])) {

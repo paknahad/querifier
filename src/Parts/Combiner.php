@@ -21,10 +21,6 @@ class Combiner extends AbstractCondition
     /**
      * Combiner constructor.
      *
-     * @param string      $operator
-     * @param array       $conditionsName
-     * @param string|null $name
-     *
      * @throws InvalidFilter
      */
     public function __construct(string $operator, array $conditionsName, ?string $name = null)
@@ -38,34 +34,23 @@ class Combiner extends AbstractCondition
         $this->setName($name);
     }
 
-    /**
-     * @param string|null $name
-     */
     public function setName(?string $name): void
     {
         static $increment;
         $this->name = $name ?? '___combination___'.++$increment;
     }
 
-    /**
-     * @return array
-     */
     public function getConditionsName(): array
     {
         return $this->conditionsName;
     }
 
-    /**
-     * @return array
-     */
     public function getConditions(): array
     {
         return $this->conditions;
     }
 
     /**
-     * @param AbstractCondition $condition
-     *
      * @return Combiner
      */
     public function addCondition(AbstractCondition $condition): self

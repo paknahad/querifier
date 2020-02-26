@@ -18,9 +18,6 @@ class Criteria extends AbstractParser
     /**
      * Separated constructor.
      *
-     * @param array $filters
-     * @param array $sort
-     *
      * @throws InvalidFilter
      * @throws \Paknahad\Querifier\Exception\InvalidOperator
      */
@@ -51,9 +48,6 @@ class Criteria extends AbstractParser
     }
 
     /**
-     * @param array $filters
-     * @param array $sort
-     *
      * @return Criteria
      *
      * @throws InvalidFilter
@@ -65,11 +59,8 @@ class Criteria extends AbstractParser
     }
 
     /**
-     * @param string      $key
      * @param mixed       $value
      * @param string|null $name
-     *
-     * @return AbstractCondition
      *
      * @throws InvalidFilter
      * @throws \Paknahad\Querifier\Exception\InvalidOperator
