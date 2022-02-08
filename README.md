@@ -6,7 +6,7 @@ Querifier
 ============
 
 ## Installing
-```
+```sh
 composer require paknahad/querifier
 ```
 
@@ -27,11 +27,11 @@ use Paknahad\Querifier\Filter;
 ## Examples:
 
 Expression:
-```http request
+```sh
 http://example.com/books?q=title:php^author.name:hamid
 ```
 Criteria:
-```http request
+```sh
 http://example.com/books?filter[title]=php&filter[author.name]=hamid
 ```
 SQL:
@@ -46,11 +46,11 @@ WHERE
 ### Advanced query:
 
 Expression:
-```http request
+```sh
 http://example.com/books?q=title:php^(author.name:%hamid%|(publish_date>2017-1-1^publish_date<2017-6-1))
 ```
 Criteria:
-```http request
+```sh
 books?filter[title]=php&filter[_c1][author.name][_like]=%hamid%&filter[_c2][publish_date][_gt]=2017-1-1&filter[_c3][publish_date][_lt]=2017-6-1]&filter[_c4][_cmb_and]=_c2,_c3&filter[_cmb_or]=_c4,_c1
 ```
 SQL:
@@ -74,7 +74,7 @@ WHERE
 ### Simple query
 
 simple query makes by this structure:
-```http request
+```sh
 example.com?q=FIELD_NAME:VALUE
 ```
 
@@ -95,16 +95,16 @@ example.com?q=FIELD_NAME:VALUE
 ### Simple query
 
 simple query makes by this structure:
-```http request
+```sh
 url?filter[FIELD_NAME]=VALUE
 ```
 ### Advanced query:
 **1- Define conditions.**
-```http request
+```sh
 url?filter[CONDITION NAME][FIELD NAME][OPERATOR]=VALUE
 ```
 **2- Combine these conditions together.**
-```http request
+```sh
 url?filter[CONDITION NAME][COMBINE]=CONDITIONS SEPARATED BY “,”
 ```
 
